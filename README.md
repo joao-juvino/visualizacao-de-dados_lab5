@@ -1,7 +1,7 @@
 # Visualização Interativa de Dados - LAB 5
 
 ## **Projeto 1**  
-🔗 [Acesse o projeto](https://joao-juvino.github.io/visualizacao-de-dados_lab5/projeto1.html)
+🔗 [Acesse o projeto](https://joao-juvino.github.io/visualizacao-de-dados_lab5/projeto1.html){:target="_blank" rel="noopener"}
 
 ### **Objetivo**
 Apresentar a quantidade de chuva acumulada anualmente na Fazenda Carnaúba ao longo de 10 anos (2014 a 2023), permitindo uma compreensão intuitiva da distribuição pluviométrica na região do Cariri paraibano.
@@ -29,7 +29,7 @@ O formato da visualização foi escolhido considerando tanto aspectos estéticos
 ---
 
 ## **Projeto 2**  
-🔗 [Acesse o projeto](https://joao-juvino.github.io/visualizacao-de-dados_lab5/projeto2.html)
+🔗 [Acesse o projeto](https://joao-juvino.github.io/visualizacao-de-dados_lab5/projeto2.html){:target="_blank" rel="noopener"}
 
 ### **Objetivo**
 Demonstrar a variação anual da chuva acumulada na Fazenda Carnaúba entre 2014 e 2023, evidenciando anos de aumento ou diminuição de precipitação.
