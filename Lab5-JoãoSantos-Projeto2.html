@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Variação da Chuva - Fazenda Carnaúba</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    #chart-container {
+        position: relative;
+        height: 90vh;
+        overflow: hidden;
+        top: 50px;
+    }
+    #controls {
+        position: relative;
+        top: 50px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        padding: 10px;
+    }
+    .filter-btn {
+        flex-direction: row;
+        background-color: #d9d9d9;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.3s;
+        margin-right: 8px;
+    }
+
+    .filter-wrapper span {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .filter-btn-blue {
+        background-color: #218fd8;
+        
+    }
+
+    .filter-btn-red {
+        background-color: #ff0000;
+        
+    }
+    .filter-btn-blue.active {
+        background-color: #218fd8;
+        color: white;
+    }
+    .filter-btn-red.active {
+        background-color: #ff0000;
+        color: white;
+    }
+
+    .filter-wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+    <div id="chart-container"></div>
+    <div id="controls">
+      <div class="filter-wrapper">
+          <button id="filter-negative" class="filter-btn filter-btn-red"></button>
+          <span>variação negativa</span>
+      </div>
+      <div class="filter-wrapper">
+          <button id="filter-positive" class="filter-btn filter-btn-blue"></button>
+          <span>variação positiva</span>
+      </div>
+    </div>
+
+  <script src="https://echarts.apache.org/en/js/vendors/echarts/dist/echarts.min.js"></script>
+  <script>
+    var dom = document.getElementById('chart-container');
+    var myChart = echarts.init(dom, null, {
+        renderer: 'canvas',
+        useDirtyRect: false
+    });
+
+    var anos = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
+    var variacoes = [124.6, -17.9, -91.7, -83.5, 553.3, -266.9, 93.4, -202.8, 550.1, -562.0];
+
+    var filterNegative = false;
+    var filterPositive = false;
+
+    function atualizarGrafico() {
+        var xAxisData = [];
+        var yAxisData = [];
+
+        for (let i = 0; i < anos.length; i++) {
+            if ((filterNegative && variacoes[i] < 0) || 
+                (filterPositive && variacoes[i] > 0) || 
+                (!filterNegative && !filterPositive)) {
+                xAxisData.push(anos[i]);
+                yAxisData.push(variacoes[i]);
+            }
+        }
+
+        var option = {
+            title: {
+                text: 'Variação da chuva acumulada por ano (2014 a 2023)',
+                subtext: 'Fazenda Carnaúba - Taperoá - PB',
+                left: 'center',  
+                top: '0px',       
+                textStyle: {
+                    fontSize: 18, 
+                    fontWeight: 'bold',
+                },
+                subtextStyle: {
+                    fontSize: 14,
+                    color: '#666', 
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                position: function (pt) {
+                    return [pt[0], '10%'];
+                },
+                formatter: function (params) {
+                    let data = params[0];
+                    let value = data.value > 0 ? data.value : -data.value;
+                    let year = data.axisValue;
+                    
+                    let imageUrl = 'https://cdn-icons-png.flaticon.com/128/3313/3313888.png';
+                    return `
+                        <div style="display: flex; align-items: center;">
+                            <img src="${imageUrl}" width="20" height="20" style="margin-right: 5px;">
+                            <div style="display: flex; justify-content: space-around; flex-direction: row; width: 110px">
+                                <b>${year}: </b> ${value} mm
+                            </div>
+                        </div>
+                    `;
+                },
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                borderColor: '#ccc',
+                textStyle: {
+                    color: '#333'
+                },
+            },
+            xAxis: {
+                data: xAxisData,
+                splitLine: { show: false }
+            },
+            yAxis: {},
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                },
+                {
+                    start: 0,
+                    end: 100
+                }
+            ],
+            series: [
+                {
+                    name: 'Variação Anual',
+                    type: 'bar',
+                    data: yAxisData.map(value => ({
+                        value: value,
+                        itemStyle: { color: value < 0 ? '#ff0000' : '#218fd8' }
+                    })),
+                    emphasis: { focus: 'series' },
+                    animationDelay: function (idx) { return idx * 10; }
+                }
+            ],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) { return idx * 5; }
+        };
+
+        myChart.setOption(option);
+    }
+
+    document.getElementById('filter-negative').addEventListener('click', function() {
+        filterNegative = !filterNegative;
+        this.classList.toggle('active');
+        atualizarGrafico();
+    });
+
+    document.getElementById('filter-positive').addEventListener('click', function() {
+        filterPositive = !filterPositive;
+        this.classList.toggle('active');
+        atualizarGrafico();
+    });
+
+    atualizarGrafico();
+    window.addEventListener('resize', myChart.resize);
+  </script>
+
+</body>
+</html>
