@@ -1,5 +1,7 @@
 # Visualização Interativa de Dados - LAB 5
 
+Dois projetos de visualização interativa utilizando a biblioteca echarts
+
 ## **Projeto 1**  
 🔗 [Acesse o projeto](https://joao-juvino.github.io/visualizacao-de-dados_lab5/projeto1.html)
 
